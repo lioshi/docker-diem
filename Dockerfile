@@ -5,6 +5,20 @@ MAINTAINER lioshi <lioshi@lioshi.com>
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
   apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php-apc php5-mcrypt && \
+
+
+  #dnf -y install php-cli;\  
+  #dnf -y install php;\  
+  #dnf -y install php-devel;\  
+  #dnf -y install php-xml;\  
+  #dnf -y install php-pdo;\  
+  #dnf -y install php-posix;\  
+  #dnf -y install php-intl;\  
+  #dnf -y install php-mbstring;\  
+  #dnf -y install php-imap;
+
+
+
   echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Add image configuration and scripts

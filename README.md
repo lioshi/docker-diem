@@ -1,3 +1,32 @@
+
+
+
+sudo docker run -d -p 80:80 -p 3306:3306 lioshi/docker-diem
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 tutum-docker-lamp
 =================
 
