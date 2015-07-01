@@ -1,9 +1,12 @@
 
 
+Run services
+	
+	sudo docker run -d -p 80:80 -p 3306:3306 lioshi/docker-diem
 
-sudo docker run -d -p 80:80 -p 3306:3306 lioshi/docker-diem
+Bash access
 
-
+	sudo docker run -i -t lioshi/docker-diem bash
 
 
 

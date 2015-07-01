@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Mysql
 VOLUME_HOME="/var/lib/mysql"
 
 sed -ri -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}/" \
@@ -15,3 +16,4 @@ else
 fi
 
 exec supervisord -n
+

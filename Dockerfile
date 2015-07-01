@@ -3,14 +3,14 @@ MAINTAINER lioshi <lioshi@lioshi.com>
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && \
-  apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php5-mcrypt php5-intl php5-imap && \
-  echo "ServerName localhost" >> /etc/apache2/apache2.conf 
+RUN apt-get update 
+RUN apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php5-mcrypt php5-intl php5-imap
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf 
 
-# Timezone 
-RUN echo "date.timezone = 'Europe/Paris'" >> /etc/php5/cli/php.ini && \
-    echo "${timezone}" > /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
-
+# Timezone settings
+ENV TIMEZONE="Europe/Paris"
+RUN echo "date.timezone = '${TIMEZONE}'" >> /etc/php5/cli/php.ini 
+RUN echo "${TIMEZONE}" > /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
 
 # Add image configuration and scripts
 ADD start-apache2.sh /start-apache2.sh
@@ -36,7 +36,7 @@ RUN a2enmod rewrite
 RUN git clone https://github.com/fermayo/hello-world-lamp.git /app
 RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
-#Enviornment variables to configure php
+# Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 10M
 ENV PHP_POST_MAX_SIZE 10M
 
