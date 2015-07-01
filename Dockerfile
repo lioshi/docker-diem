@@ -5,8 +5,12 @@ MAINTAINER lioshi <lioshi@lioshi.com>
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
   apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php5-mcrypt php5-intl php5-imap && \
-  echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
-  echo "date.timezone = 'Europe/Paris'" >> /etc/php5/cli/php.ini 
+  echo "ServerName localhost" >> /etc/apache2/apache2.conf 
+
+# Timezone 
+RUN echo "date.timezone = 'Europe/Paris'" >> /etc/php5/cli/php.ini && \
+    echo "${timezone}" > /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
+
 
 # Add image configuration and scripts
 ADD start-apache2.sh /start-apache2.sh
