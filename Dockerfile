@@ -9,8 +9,8 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Timezone settings
 ENV TIMEZONE="Europe/Paris"
-RUN echo "date.timezone = '${TIMEZONE}'" >> /etc/php5/cli/php.ini 
-RUN echo "${TIMEZONE}" > /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
+RUN echo "date.timezone = '${TIMEZONE}'" >> /etc/php5/cli/php.ini && \
+  echo "${TIMEZONE}" > /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata
 
 # Add image configuration and scripts
 ADD start-apache2.sh /start-apache2.sh
