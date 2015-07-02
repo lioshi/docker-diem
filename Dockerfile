@@ -5,7 +5,15 @@ MAINTAINER lioshi <lioshi@lioshi.com>
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update 
 RUN apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php5-mcrypt php5-intl php5-imap
+
+RUN echo "# Include vhost conf" >> /etc/apache2/apache2.conf 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf 
+RUN echo "IncludeOptional /data/conf/*.conf" >> /etc/apache2/apache2.conf 
+RUN echo "<Directory /data/www> " >> /etc/apache2/apache2.conf 
+RUN echo "    Options Indexes FollowSymLinks Includes ExecCGI" >> /etc/apache2/apache2.conf 
+RUN echo "    AllowOverride None" >> /etc/apache2/apache2.conf 
+RUN echo "    Require all granted" >> /etc/apache2/apache2.conf 
+RUN echo "</Directory>" >> /etc/apache2/apache2.conf 
 
 # Timezone settings
 ENV TIMEZONE="Europe/Paris"
@@ -28,13 +36,8 @@ RUN rm -rf /var/lib/mysql/*
 ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 RUN chmod 755 /*.sh
 
-# config to enable .htaccess
-ADD apache_default /etc/apache2/sites-available/000-default.conf
+# config Apache
 RUN a2enmod rewrite
-
-# Configure /app folder with sample app
-RUN git clone https://github.com/fermayo/hello-world-lamp.git /app
-RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
 # Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 10M
@@ -42,6 +45,11 @@ ENV PHP_POST_MAX_SIZE 10M
 
 # Add volumes for MySQL 
 VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
+# Add volumes for sites, confs and libs
+# /data/conf : apache conf file
+# /data/www  : site's file
+# /data/lib  : external libs
+VOLUME  ["/data"]
 
 EXPOSE 80 3306
 CMD ["/run.sh"]

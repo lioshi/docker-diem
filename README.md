@@ -10,8 +10,141 @@ Bash access
 
 
 
+Pull an image
+
+    service docker start
+    service docker status
+
+    sudo docker pull fedora:22
+
+Delete a docker image
+
+    sudo docker rmi -f f1b10cd84249
+
+Delete all containers
+
+    docker rm $(docker ps -a -q)
+
+Delete all images
+
+    docker rmi $(docker images -q)
+
+Build an image
+    
+    sudo docker build --tag="docker-diem:latest" .
 
 
+## Launch
+
+	sudo docker run -d -p 80:80 -p 3306:3306 -v /data:/data docker-diem:latest
+    sudo docker run -i -t -v /data:/data docker-diem:latest bash
+
+## Apache2
+
+See status
+	
+	apachectl status
+	apachectl configtest
+
+
+## Create Dockerfile in github
+
+See https://github.com/lioshi/docker-diem
+
+## Automatic build image
+
+créer image: https://www.wanadev.fr/docker-vivre-avec-une-baleine-partie-2/
+interactive build image : http://www.projectatomic.io/docs/docker-building-images/
+
+
+
+
+###PHP dev
+
+####Permissions
+Se mettre en administrateur
+
+**Désactiver SELinux**
+SELinuwx ajoute une couche de sécurity plutôt ennuyeuse pour les accès apache, et autres... On la désactive donc...
+La première est d'éditer le fichier /etc/selinux/config et de remplacer la ligne SELINUX=enforcing par:
+
+    SELINUX=disabled
+
+puis de rebooter le système.
+
+####Apache
+
+    dnf -y install httpd-manual;\
+    service httpd start;\
+    chkconfig httpd on;
+
+####Ajout de l'arborescence de configuration www
+    
+    mkdir /data; \
+    mkdir /data/conf; \
+    mkdir /data/www; \
+    mkdir /data/www/_lib; \
+    chown -R lioshi:lioshi /data/; 
+
+####mysql 
+    
+    dnf -y install mysql-server; \
+    systemctl enable mariadb.service; \
+    mysql_secure_installation;
+
+    dnf -y install phpMyAdmin; \
+    service httpd reload;
+
+####php
+    
+    dnf -y install php-cli;\
+    dnf -y install php;\
+    dnf -y install php-devel;\
+    dnf -y install php-xml;\
+    dnf -y install php-pdo;\
+    dnf -y install php-posix;\
+    dnf -y install php-intl;\
+    dnf -y install php-mbstring;\
+    dnf -y install php-imap;
+
+####conf php et apache
+    
+    echo "date.timezone = 'Europe/Paris'" >> /etc/php.ini; \
+    echo "# Include vhost conf" >> /etc/httpd/conf/httpd.conf; \
+    echo "Include /data/conf/*.conf" >> /etc/httpd/conf/httpd.conf; \
+    echo "<Directory /> " >> /etc/httpd/conf/httpd.conf; \
+    echo "    Options Indexes FollowSymLinks Includes ExecCGI" >> /etc/httpd/conf/httpd.conf; \
+    echo "    AllowOverride All" >> /etc/httpd/conf/httpd.conf; \
+    echo "    Order deny,allow" >> /etc/httpd/conf/httpd.conf; \
+    echo "    Allow from all" >> /etc/httpd/conf/httpd.conf; \
+    echo "</Directory>" >> /etc/httpd/conf/httpd.conf; 
+
+**Warning: remove all httpd.conf "Includes"**
+
+####pecl
+    dnf -y install php-pear; \
+    dnf -y install gcc;
+
+####graphviz
+    
+    dnf -y install graphviz; \
+
+####Node 
+    dnf -y install nodejs npm; \
+    npm install -g less; \ 
+    npm install -g less-plugin-autoprefix; \
+    npm install -g less-plugin-group-css-media-queries;
+
+####ImageMagick
+    dnf -y install ImageMagick;\
+    dnf -y install ImageMagick-devel;\
+    echo -e "\033[1;33m IMAGICK : Compilation avec pecl de imagick-3.1.0RC2 (dernière version fonctionnelle sur php > 5.4)\033[0m";\
+    pecl install imagick;\
+    echo "extension=imagick.so" > /etc/php.d/imagick.ini;\
+    service httpd restart;
+
+####Parallel
+    dnf -y install parallel;
 
 
 
