@@ -37,7 +37,7 @@ Build an image
 ## Launch
 Container launching
 	
-    sudo docker run -d -p 80:80 -p 3306:3306 -v /data:/data -e MYSQL_PASS="admin" --name=docker-diem docker-diem:latest
+    sudo docker run -d -p 80:80 -p 3306:3306 -v /data:/data -v /var/lib/mysql:/var/lib/mysql -e MYSQL_PASS="admin" --name=docker-diem docker-diem:latest
 
 Command line access of previous container
 
