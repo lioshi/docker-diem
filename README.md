@@ -23,11 +23,11 @@ Delete a docker image
 
 Delete all containers
 
-    docker rm $(docker ps -a -q)
+    sudo docker rm $(sudo docker ps -a -q)
 
 Delete all images
 
-    docker rmi $(docker images -q)
+    sudo docker rmi $(sudo docker images -q)
 
 Build an image
     
@@ -35,9 +35,13 @@ Build an image
 
 
 ## Launch
+Container launching
+	
+    sudo docker run -d -p 80:80 -p 3306:3306 -v /data:/data -e MYSQL_PASS="admin" --name=docker-diem docker-diem:latest
 
-	sudo docker run -d -p 80:80 -p 3306:3306 -v /data:/data docker-diem:latest
-    sudo docker run -i -t -v /data:/data docker-diem:latest bash
+Command line access of previous container
+
+    sudo docker exec -it docker-diem bash
 
 ## Apache2
 
@@ -55,6 +59,11 @@ See https://github.com/lioshi/docker-diem
 
 créer image: https://www.wanadev.fr/docker-vivre-avec-une-baleine-partie-2/
 interactive build image : http://www.projectatomic.io/docs/docker-building-images/
+
+
+
+
+
 
 
 
