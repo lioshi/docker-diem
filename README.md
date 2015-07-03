@@ -8,7 +8,7 @@ This docker image is used to launch container with all necessary applicatives in
 - Node
 - ImageMagick
 - NodeJs
-- ...
+- Etc ...
 
 ## Launch container
 
