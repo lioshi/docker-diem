@@ -1,47 +1,60 @@
+# Docker-diem
+This docker image is used to launch container with all necessary applicatives instances for diem CMF
 
-
-Run services
-	
-	sudo docker run -d -p 80:80 -p 3306:3306 lioshi/docker-diem
-
-Bash access
-
-	sudo docker run -i -t lioshi/docker-diem bash
-
-
-
-Pull an image
-
-    service docker start
-    service docker status
-
-    sudo docker pull fedora:22
-
-Delete a docker image
-
-    sudo docker rmi -f f1b10cd84249
-
-Delete all containers
-
-    sudo docker rm $(sudo docker ps -a -q)
-
-Delete all images
-
-    sudo docker rmi $(sudo docker images -q)
-
-Build an image
-    
-    sudo docker build --tag="docker-diem:latest" .
-
+- Debian
+- Apache
+- PHP
+- Mysql 
+- Node
+- ImageMagick
+- NodeJs
+- ...
 
 ## Launch
+
+Create local datas. Create host directories.
+
+    mkdir /data 
+    mkdir /data/docker-diem 
+    mkdir /data/docker-diem/conf 
+    mkdir /data/docker-diem/www 
+    mkdir /data/docker-diem/lib 
+
+Directory */data/docker-diem/conf* contains apache conf file
+Directory */data/docker-diem/www* contains site's source's file
+Directory */data/docker-diem/lib* contains external libs, diem's lib needed
+
+
 Container launching
 	
-    sudo docker run -d -p 80:80 -p 3306:3306 -v /data:/data -v /var/lib/mysql:/var/lib/mysql -e MYSQL_PASS="admin" --name=docker-diem docker-diem:latest
+    sudo docker run -d -p 80:80 -p 3306:3306 \
+    -v /data:/data \
+    -v /var/lib/mysql:/var/lib/mysql \
+    -e MYSQL_PASS="admin" \
+    --name=docker-diem \
+    docker-diem:latest
+
+Alternative launching with added hosts
+
+    sudo docker run -d -p 80:80 -p 3306:3306 \
+    -v /data:/data \
+    -v /var/lib/mysql:/var/lib/mysql \
+    -e MYSQL_PASS="admin" \
+    --name=docker-diem \
+    --add-host=sitediem.loc:127.0.0.1 \
+    --add-host=sitediem2.loc:127.0.0.1 \
+    --add-host=sitediem3.loc:127.0.0.1 \
+    docker-diem:latest
+
 
 Command line access of previous container
 
     sudo docker exec -it docker-diem bash
+
+Erase container
+
+    sudo docker rm -f docker-diem
+
 
 ## Apache2
 
